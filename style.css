@@ -1,5 +1,12 @@
-.header {
+@charset "UTF-8";
+
+h1 {
   background-color: lightblue;
   text-align: center;
   padding: 20px;
+}
+
+body {
+  background-color: lightgray;
+  text-align: center;
 }
