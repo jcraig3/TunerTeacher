@@ -1,21 +1,19 @@
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioContext = new AudioContext();
-var analyser = audioContext.createAnalyser();
-var source;
+var audioContext;
+var constraints = { audio: true };
 
-//from API site
-function getLocalStream() {
-  navigator.mediaDevices
-    .getUserMedia({ audio: true })
-    .then((stream) => {
-      window.localStream = stream; // A
-      window.localAudio.srcObject = stream; // B
-      window.localAudio.autoplay = true; // C
+navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+  try {
+    audioContext = new AudioContext();
+  } catch (e) {
+    alert("Web Audio API is not supported in this browser");
+  }
+});
 
-      source = audioContext.createMediaStreamSource(stream);
-    })
-    .catch((err) => {
-      console.error(`mic access needed: ${err}`);
-    });
+//print HZ to hz span
+function changeHz() {
+  document.getElementById("hz").textContent = "Hz here";
 }
-getLocalStream();
+
+document.getElementById("btn").addEventListener("click", () => {
+  changeHz();
+});
