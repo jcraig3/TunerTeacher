@@ -1,8 +1,11 @@
 var audioContext;
 var hz = document.getElementById("hz");
 var startBtn = document.getElementById("btn");
+var graph = document.getElementById("graph");
+var slide = document.getElementById("slide");
 var constraints = { audio: true };
-var playing = false;
+var tuning = false;
+var frequency;
 
 navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
   try {
@@ -14,23 +17,35 @@ navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
 
 //print HZ to hz span
 function changeHz() {
-  hz.textContent = "Hz here";
+  hz.textContent = frequency;
 }
 
-startBtn.addEventListener("click", () => {
+slide.onmousedown = function () {
+  playA();
   changeHz();
-});
+};
+
+slide.onmouseup = function () {
+  oscillator.disconnect();
+};
 
 startBtn.onclick = function () {
-  if (playing == false) {
-    playing = true;
-    oscillator = audioContext.createOscillator(); //creates oscillator
-    oscillator.type = "sine"; //chooses the type of wave
-    oscillator.frequency.value = 110; //assigning the value of oscPitch to the oscillators frequency value
-    oscillator.connect(audioContext.destination); //sends to output
-    oscillator.start(audioContext.currentTime); //starts the sound at the current time
+  if (tuning == false) {
+    tuning = true;
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
   } else {
-    playing = false;
-    oscillator.disconnect();
+    tuning = false;
   }
 };
+
+function playA() {
+  oscillator = audioContext.createOscillator();
+  oscillator.type = "sine";
+  oscillator.frequency.value = slide.value; //frequency value in HZ
+  frequency = oscillator.frequency.value;
+  oscillator.connect(audioContext.destination);
+  oscillator.start(audioContext.currentTime);
+}
