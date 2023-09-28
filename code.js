@@ -2,6 +2,7 @@ var audioContext;
 var hz = document.getElementById("hz");
 var startBtn = document.getElementById("btn");
 var constraints = { audio: true };
+var playing = false;
 
 navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
   try {
@@ -21,9 +22,15 @@ startBtn.addEventListener("click", () => {
 });
 
 startBtn.onclick = function () {
-  oscillator = audioContext.createOscillator(); //creates oscillator
-  oscillator.type = "sine"; //chooses the type of wave
-  oscillator.frequency.value = 110; //assigning the value of oscPitch to the oscillators frequency value
-  oscillator.connect(audioContext.destination); //sends to output
-  oscillator.start(audioContext.currentTime); //starts the sound at the current time
+  if (playing == false) {
+    playing = true;
+    oscillator = audioContext.createOscillator(); //creates oscillator
+    oscillator.type = "sine"; //chooses the type of wave
+    oscillator.frequency.value = 110; //assigning the value of oscPitch to the oscillators frequency value
+    oscillator.connect(audioContext.destination); //sends to output
+    oscillator.start(audioContext.currentTime); //starts the sound at the current time
+  } else {
+    playing = false;
+    oscillator.disconnect();
+  }
 };
