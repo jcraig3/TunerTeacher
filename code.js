@@ -1,9 +1,7 @@
-var hz = document.getElementById("hz");
-var refhz = document.getElementById("refhz");
-var startBtn = document.getElementById("btn");
-var graph = document.getElementById("graph");
-var slide = document.getElementById("slide");
-var note = document.getElementById("note");
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+//html elements
+var hz, refhz, startBtn, graph, slide, note, info;
 
 var audioContext;
 var analyser;
@@ -19,6 +17,53 @@ var bufferLength = 2048;
 var buffer = new Float32Array(bufferLength);
 const dataArray = new Uint8Array(bufferLength);
 
+window.onload = function () {
+  //html elements
+  hz = document.getElementById("hz");
+  refhz = document.getElementById("refhz");
+  startBtn = document.getElementById("btn");
+  graph = document.getElementById("graph");
+  slide = document.getElementById("slide");
+  note = document.getElementById("note");
+  info = document.getElementById("info");
+};
+
+function start() {
+  if (tuning == false) {
+    tuning = true;
+    audioContext = new window.AudioContext();
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+      try {
+        source = audioContext.createMediaStreamSource(stream);
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
+        source.connect(analyser);
+        refresh();
+      } catch (e) {
+        alert("Web Audio API is not supported in this browser");
+      }
+    });
+  } else {
+    tuning = false;
+  }
+}
+
+function refresh() {
+  analyser.getFloatTimeDomainData(buffer);
+  var ac = autoCorrelate(buffer, audioContext.sampleRate);
+
+  if (ac == -1) {
+    hz.textContent = "--";
+  } else {
+    frequency = Math.round(ac);
+    changeHz();
+  }
+
+  if (!window.requestAnimationFrame)
+    window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+  window.requestAnimationFrame(refresh);
+}
+
 //print HZ to hz span
 function changeHz() {
   hz.textContent = frequency;
@@ -28,39 +73,14 @@ function changeRefHz() {
   refhz.textContent = reffrequency;
 }
 
-slide.onmousedown = function () {
+function slideDown() {
   playRef();
   changeRefHz();
-};
+}
 
-slide.onmouseup = function () {
+function slideUp() {
   oscillator.disconnect();
-};
-
-startBtn.onclick = function () {
-  if (tuning == false) {
-    tuning = true;
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-      try {
-        audioContext = new window.AudioContext();
-        source = audioContext.createMediaStreamSource(stream);
-        analyser = audioContext.createAnalyser();
-        analyser.fftSize = 2048;
-        source.connect(analyser);
-        analyser.getFloatTimeDomainData(buffer);
-        pitch = autoCorrelate(buffer, audioContext.sampleRate);
-      } catch (e) {
-        alert("Web Audio API is not supported in this browser");
-      }
-    });
-    frequency = pitch;
-    changeHz();
-    if (!window.requestAnimationFrame)
-      window.requestAnimationFrame = window.webkitRequestAnimationFrame;
-  } else {
-    tuning = false;
-  }
-};
+}
 
 function playRef() {
   oscillator = audioContext.createOscillator();
