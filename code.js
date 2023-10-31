@@ -3,19 +3,35 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 //html elements
 var hz, refhz, startBtn, graph, slide, note, info;
 
+//audio context elements
 var audioContext;
 var analyser;
 var source;
-
 var constraints = { audio: true };
-var tuning = false;
-var frequency;
-var reffrequency;
-var pitch;
-
 var bufferLength = 2048;
 var buffer = new Float32Array(bufferLength);
 const dataArray = new Uint8Array(bufferLength);
+
+//reference elements
+var tuning = false;
+var pitch;
+var frequency;
+var reffrequency;
+var noteName;
+var noteArray = [
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B",
+];
 
 window.onload = function () {
   //html elements
@@ -28,6 +44,7 @@ window.onload = function () {
   info = document.getElementById("info");
 };
 
+//when called, initialize audio context for stream
 function start() {
   if (tuning == false) {
     tuning = true;
@@ -48,6 +65,7 @@ function start() {
   }
 }
 
+//refresh stream information and update frequency
 function refresh() {
   analyser.getFloatTimeDomainData(buffer);
   var ac = autoCorrelate(buffer, audioContext.sampleRate);
@@ -57,6 +75,7 @@ function refresh() {
   } else {
     frequency = Math.round(ac);
     changeHz();
+    updateNoteName(frequency);
   }
 
   if (!window.requestAnimationFrame)
@@ -69,6 +88,7 @@ function changeHz() {
   hz.textContent = frequency;
 }
 
+//print refHZ to refhz span
 function changeRefHz() {
   refhz.textContent = reffrequency;
 }
@@ -80,6 +100,18 @@ function slideDown() {
 
 function slideUp() {
   oscillator.disconnect();
+}
+
+function getNote(frequency) {
+  var noteValue = 12 * (Math.log(frequency / 440) / Math.log(2));
+  var toMod = Math.round(noteValue) + 69;
+  return toMod % 12;
+}
+
+function updateNoteName(frequency) {
+  var noteVal = getNote(frequency);
+  noteName = noteArray[noteVal];
+  note.textContent = noteName;
 }
 
 function playRef() {
