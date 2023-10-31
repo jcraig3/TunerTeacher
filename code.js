@@ -102,6 +102,7 @@ function slideUp() {
   oscillator.disconnect();
 }
 
+//equation to get note name with research from https://pages.mtu.edu/~suits/NoteFreqCalcs.html
 function getNote(frequency) {
   var noteValue = 12 * (Math.log(frequency / 440) / Math.log(2));
   var toMod = Math.round(noteValue) + 69;
