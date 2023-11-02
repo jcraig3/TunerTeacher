@@ -1,7 +1,7 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 //html elements
-var hz, refhz, startBtn, graph, slide, note, info;
+var hz, refhz, startBtn, graph, slide, note, info, change;
 
 //audio context elements
 var audioContext;
@@ -15,6 +15,8 @@ const dataArray = new Uint8Array(bufferLength);
 //reference elements
 var tuning = false;
 var pitch;
+var noteIndex;
+var changeNeeded;
 var frequency;
 var reffrequency;
 var noteName;
@@ -42,6 +44,7 @@ window.onload = function () {
   slide = document.getElementById("slide");
   note = document.getElementById("note");
   info = document.getElementById("info");
+  change = document.getElementById("change");
 };
 
 //when called, initialize audio context for stream
@@ -72,10 +75,13 @@ function refresh() {
 
   if (ac == -1) {
     hz.textContent = "--";
+    note.textContent = "--";
+    change.textContent = "--";
   } else {
     frequency = Math.round(ac);
     changeHz();
     updateNoteName(frequency);
+    updateChange(frequency, noteIndex);
   }
 
   if (!window.requestAnimationFrame)
@@ -106,13 +112,30 @@ function slideUp() {
 function getNote(frequency) {
   var noteValue = 12 * (Math.log(frequency / 440) / Math.log(2));
   var toMod = Math.round(noteValue) + 69;
-  return toMod % 12;
+  noteIndex = toMod % 12;
+  noteName = noteArray[noteIndex];
+  return noteName;
 }
 
 function updateNoteName(frequency) {
-  var noteVal = getNote(frequency);
-  noteName = noteArray[noteVal];
+  var noteName = getNote(frequency);
   note.textContent = noteName;
+}
+
+function getFrequency(note) {
+  var outPitch = 440 * Math.pow(2, (note - 69) / 12);
+  return outPitch;
+}
+
+function getChangeNeeded(curFreq, note) {
+  var freq = getFrequency(note);
+  var out = Math.round((1200 * Math.log(curFreq / freq)) / Math.log(2));
+  return out;
+}
+
+function updateChange(frequency, note) {
+  changeNeeded = getChangeNeeded(frequency, note);
+  change.textContent = changeNeeded;
 }
 
 function playRef() {
@@ -134,9 +157,7 @@ function autoCorrelate(buf, sampleRate) {
     rms += val * val;
   }
   rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.01)
-    // not enough signal
-    return -1;
+  if (rms < 0.01) return -1;
 
   var r1 = 0,
     r2 = SIZE - 1,

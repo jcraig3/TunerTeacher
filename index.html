@@ -7,23 +7,26 @@
   </h1>
   <body>
     <canvas id="graph"></canvas>
-    <div id="info">
+    <div id="tuner">
       <p>Note: <span id="note"></span></p>
       <p>Current Hz: <span id="hz"></span></p>
       <p>Change Needed: <span id="change"></span></p>
-      <p>Current Reference Hz: <span id="refhz"></span></p>
     </div>
-    <input
-      type="range"
-      min="82"
-      max="330"
-      value="50"
-      class="slider"
-      id="slide"
-      onmousedown="slideDown();"
-      onmouseup="slideUp();"
-    />
-    <button id="btn" onclick="start();">Press to Tune</button>
+    <div id="reference">
+      <p>Current Reference Hz: <span id="refhz"></span></p>
+      <input
+        type="range"
+        min="82"
+        max="330"
+        value="50"
+        class="slider"
+        id="slide"
+        onmousedown="slideDown();"
+        onmouseup="slideUp();"
+      />
+    </div>
+    <p></p>
+    <button id="btn" onclick="start();">START TUNER</button>
     <p>Tune your guitar!</p>
     <script type="text/javascript" src="./code.js"></script>
   </body>
