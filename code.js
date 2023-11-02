@@ -71,14 +71,14 @@ function start() {
 //refresh stream information and update frequency
 function refresh() {
   analyser.getFloatTimeDomainData(buffer);
-  var ac = autoCorrelate(buffer, audioContext.sampleRate);
+  pitch = autoCorrelate(buffer, audioContext.sampleRate);
 
-  if (ac == -1) {
+  if (pitch == -1) {
     hz.textContent = "--";
     note.textContent = "--";
     change.textContent = "--";
   } else {
-    frequency = Math.round(ac);
+    frequency = Math.round(pitch);
     changeHz();
     updateNoteName(frequency);
     updateChange(frequency, noteIndex);
@@ -111,9 +111,9 @@ function slideUp() {
 //equation to get note name with research from https://pages.mtu.edu/~suits/NoteFreqCalcs.html
 function getNote(frequency) {
   var noteValue = 12 * (Math.log(frequency / 440) / Math.log(2));
-  var toMod = Math.round(noteValue) + 69;
-  noteIndex = toMod % 12;
-  noteName = noteArray[noteIndex];
+  noteIndex = Math.round(noteValue) + 69;
+  var modded = noteIndex % 12;
+  noteName = noteArray[modded];
   return noteName;
 }
 
