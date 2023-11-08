@@ -17,6 +17,7 @@ var tuning = false;
 var pitch;
 var noteIndex;
 var changeNeeded;
+var cents;
 var frequency;
 var reffrequency;
 var noteName;
@@ -40,11 +41,16 @@ window.onload = function () {
   hz = document.getElementById("hz");
   refhz = document.getElementById("refhz");
   startBtn = document.getElementById("btn");
-  graph = document.getElementById("graph");
   slide = document.getElementById("slide");
   note = document.getElementById("note");
   info = document.getElementById("info");
   change = document.getElementById("change");
+
+  //set up format of note info
+  note.className = "pretune";
+  note.textContent = "--";
+  hz.textContent = "--";
+  change.textContent = "--";
 };
 
 //when called, initialize audio context for stream
@@ -81,6 +87,13 @@ function refresh() {
     frequency = Math.round(pitch);
     changeHz();
     updateNoteName(frequency);
+    if (cents == 0) {
+      note.className = "inTune";
+    } else if (cents <= 10 && cents >= -10) {
+      note.className = "closeTune";
+    } else {
+      note.className = "outTune";
+    }
     updateChange(frequency, noteIndex);
   }
 
@@ -129,8 +142,8 @@ function getFrequency(note) {
 
 function getChangeNeeded(curFreq, note) {
   var freq = getFrequency(note);
-  var out = Math.round((1200 * Math.log(curFreq / freq)) / Math.log(2));
-  return out;
+  cents = Math.round((1200 * Math.log(curFreq / freq)) / Math.log(2));
+  return cents;
 }
 
 function updateChange(frequency, note) {

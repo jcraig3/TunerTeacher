@@ -3,15 +3,17 @@
   <h1>
     <link rel="stylesheet" type="text/css" href="./style.css" />
     <title>TunerTeacher</title>
-    <p>TunerTeacher</p>
+    <img src="logo.png" id="logo" />
   </h1>
   <body>
-    <canvas id="graph"></canvas>
     <div id="tuner">
-      <p>Note: <span id="note"></span></p>
-      <p>Current Hz: <span id="hz"></span></p>
-      <p>Change Needed: <span id="change"></span></p>
+      <p><span id="note" class="outTune"></span></p>
+      <div id="tuneInfo">
+        <p>Cents: <span id="change"></span></p>
+        <p>Hz: <span id="hz"></span></p>
+      </div>
     </div>
+    <button id="btn" onclick="start();">START TUNER</button>
     <div id="reference">
       <p>Current Reference Hz: <span id="refhz"></span></p>
       <input
@@ -26,7 +28,6 @@
       />
     </div>
     <p></p>
-    <button id="btn" onclick="start();">START TUNER</button>
     <p>Tune your guitar!</p>
     <script type="text/javascript" src="./code.js"></script>
   </body>

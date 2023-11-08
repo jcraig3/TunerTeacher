@@ -4,9 +4,20 @@
   text-align: center;
 }
 
+#logo {
+  height: 150px;
+  width: 300px;
+  border-radius: 30px;
+}
+
 h1 {
-  background-color: lightblue;
+  margin-top: 10px;
   padding: 2%;
+  border-radius: 50px;
+}
+
+#note {
+  font-size: 550%;
 }
 
 body {
@@ -15,8 +26,27 @@ body {
 
 #tuner {
   margin: auto;
+  font-family: sans-serif;
   width: 50%;
   height: 50%;
-  padding: 5px;
-  border: 3px dotted blueviolet;
+}
+
+#tuneInfo {
+  font-size: 120%;
+}
+
+.pretune {
+  color: black;
+}
+
+.outTune {
+  color: red;
+}
+
+.inTune {
+  color: green;
+}
+
+.closeTune {
+  color: rgb(199, 192, 4);
 }
