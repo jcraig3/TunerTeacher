@@ -89,8 +89,10 @@ function refresh() {
     updateNoteName(frequency);
     if (cents == 0) {
       note.className = "inTune";
-    } else if (cents <= 10 && cents >= -10) {
+    } else if (cents <= 7 && cents >= -7) {
       note.className = "closeTune";
+    } else if (cents <= 15 && cents >= -15) {
+      note.className = "nearTune";
     } else {
       note.className = "outTune";
     }

@@ -43,12 +43,16 @@ body {
   color: red;
 }
 
-.inTune {
-  color: green;
+.nearTune {
+  color: rgb(199, 192, 4);
 }
 
 .closeTune {
-  color: rgb(199, 192, 4);
+  color: rgb(21, 93, 187);
+}
+
+.inTune {
+  color: green;
 }
 
 #refNotes {
