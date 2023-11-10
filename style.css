@@ -17,7 +17,7 @@ h1 {
 }
 
 #note {
-  font-size: 550%;
+  font-size: 600%;
 }
 
 body {
@@ -49,4 +49,32 @@ body {
 
 .closeTune {
   color: rgb(199, 192, 4);
+}
+
+#refNotes {
+  border-radius: 4px;
+  font-size: 30px;
+}
+
+.natural {
+  background-color: white;
+  color: black;
+}
+
+.sharp {
+  background-color: black;
+  color: white;
+}
+
+#btn {
+  font-size: 15px;
+  padding: 5px;
+  background-color: rgb(111, 214, 245);
+  border-radius: 8px;
+  border: 5px, royalblue;
+  transition-duration: 0.5s;
+}
+
+#btn:hover {
+  background-color: aliceblue;
 }

@@ -121,6 +121,15 @@ function slideUp() {
   oscillator.disconnect();
 }
 
+function refNoteDown(buttonFreq) {
+  playRef(buttonFreq);
+  changeRefHz();
+}
+
+function refNoteUp() {
+  oscillator.disconnect();
+}
+
 //equation to get note name with research from https://pages.mtu.edu/~suits/NoteFreqCalcs.html
 function getNote(frequency) {
   var noteValue = 12 * (Math.log(frequency / 440) / Math.log(2));
@@ -151,11 +160,20 @@ function updateChange(frequency, note) {
   change.textContent = changeNeeded;
 }
 
-function playRef() {
+function playSlideRef() {
   oscillator = audioContext.createOscillator();
   oscillator.type = "sine";
   oscillator.frequency.value = slide.value; //frequency value in HZ
   reffrequency = oscillator.frequency.value;
+  oscillator.connect(audioContext.destination);
+  oscillator.start(audioContext.currentTime);
+}
+
+function playRef(buttonFreq) {
+  oscillator = audioContext.createOscillator();
+  oscillator.type = "sine";
+  reffrequency = buttonFreq;
+  oscillator.frequency.value = buttonFreq; //frequency value in HZ
   oscillator.connect(audioContext.destination);
   oscillator.start(audioContext.currentTime);
 }
