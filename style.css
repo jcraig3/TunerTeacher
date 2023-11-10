@@ -99,8 +99,17 @@ body {
   border-radius: 8px;
   border: 5px, royalblue;
   transition-duration: 0.5s;
+  position: absolute;
 }
 
 #back:hover {
   background-color: aliceblue;
+}
+
+#homeText {
+  margin-top: 5%;
+  margin-left: 20%;
+  margin-right: 20%;
+  font-size: large;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
