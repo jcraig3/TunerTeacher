@@ -96,6 +96,19 @@ body {
   background-color: aliceblue;
 }
 
+#toMetronome {
+  font-size: 15px;
+  padding: 5px;
+  background-color: rgb(111, 214, 245);
+  border-radius: 8px;
+  border: 5px, royalblue;
+  transition-duration: 0.5s;
+}
+
+#toMetronome:hover {
+  background-color: aliceblue;
+}
+
 #back {
   font-size: 15px;
   padding: 5px;
