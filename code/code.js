@@ -114,11 +114,13 @@ function changeRefHz() {
   refhz.textContent = reffrequency;
 }
 
+//for slide reference notes
 function slideDown() {
   playRef();
   changeRefHz();
 }
 
+//for slide reference notes
 function slideUp() {
   oscillator.disconnect();
 }
@@ -162,6 +164,7 @@ function updateChange(frequency, note) {
   change.textContent = changeNeeded;
 }
 
+//for slide reference notes
 function playSlideRef() {
   oscillator = audioContext.createOscillator();
   oscillator.type = "sine";
